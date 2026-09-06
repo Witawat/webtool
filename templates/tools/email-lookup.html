@@ -1,0 +1,13 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field wide">
+  <label for="email">{{ t(lang, 'tool.email-lookup.email_label') }}</label>
+  <input type="text" id="email" name="email" placeholder="user@example.com" required>
+</div>
+{% endblock %}
+{% block about %}
+{% if not email_enabled %}
+<p class="alert-error">{{ t(lang, 'tool.email-lookup.disabled') }}</p>
+{% endif %}
+<p>{{ t(lang, 'tool.email-lookup.about') }}</p>
+{% endblock %}

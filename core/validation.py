@@ -32,6 +32,14 @@ PORT_NAMES = {
 }
 
 _DOMAIN_RE = re.compile(r"^([a-z0-9-]+\.)+[a-z]{2,63}$")
+_EMAIL_RE = re.compile(r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,63}$")
+
+
+def parse_email(s: str) -> str:
+    s = s.strip().lower()
+    if not _EMAIL_RE.match(s):
+        raise AppError("INVALID_INPUT", "INVALID_INPUT", field="email")
+    return s
 
 
 def parse_ip(s: str) -> ipaddress.IPv4Address | ipaddress.IPv6Address:
