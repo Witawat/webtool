@@ -1,0 +1,14 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field wide">
+  <label for="number">{{ t(lang, 'tool.phone.number_label') }}</label>
+  <input type="text" id="number" name="number" placeholder="+16692226000" required>
+</div>
+<div class="field">
+  <label for="country">{{ t(lang, 'tool.phone.country_label') }}</label>
+  <input type="text" id="country" name="country" placeholder="US">
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.phone.about') }}</p>
+{% endblock %}
