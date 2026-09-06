@@ -26,7 +26,7 @@
 
 ## Phase 1 — 14 self-host
 - [x] 1. my-ip
-- [ ] 2. port-checker
+- [x] 2. port-checker
 - [ ] 3. dns
 - [ ] 4. subnet-calc
 - [ ] 5. port-scan

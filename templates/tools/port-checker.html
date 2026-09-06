@@ -1,0 +1,22 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="host">{{ t(lang, 'tool.port-checker.host_label') }}</label>
+  <input type="text" id="host" name="host" placeholder="example.com" required>
+</div>
+<div class="field">
+  <label for="port">{{ t(lang, 'tool.port-checker.port_label') }}</label>
+  <input type="number" id="port" name="port" min="1" max="65535" placeholder="80" required>
+</div>
+<div class="field quick-ports">
+  <label>{{ t(lang, 'tool.port-checker.quick_label') }}</label>
+  <div class="quick-ports-btns">
+    {% for p in common_ports %}
+    <button type="button" class="chip" data-port="{{ p }}">{{ p }}</button>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.port-checker.about') }}</p>
+{% endblock %}
