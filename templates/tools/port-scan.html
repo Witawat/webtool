@@ -1,0 +1,18 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="ip">{{ t(lang, 'tool.port-scan.ip_label') }}</label>
+  <input type="text" id="ip" name="ip" placeholder="8.8.8.8" required>
+</div>
+<div class="field">
+  <label for="start_port">{{ t(lang, 'tool.port-scan.start_label') }}</label>
+  <input type="number" id="start_port" name="start_port" min="1" max="65535" value="1" required>
+</div>
+<div class="field">
+  <label for="end_port">{{ t(lang, 'tool.port-scan.end_label') }}</label>
+  <input type="number" id="end_port" name="end_port" min="1" max="65535" value="100" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.port-scan.about') }}</p>
+{% endblock %}

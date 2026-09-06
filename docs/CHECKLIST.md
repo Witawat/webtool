@@ -29,7 +29,7 @@
 - [x] 2. port-checker
 - [x] 3. dns
 - [x] 4. subnet-calc
-- [ ] 5. port-scan
+- [x] 5. port-scan
 - [ ] 6. ping
 - [ ] 7. traceroute
 - [ ] 8. ssl
