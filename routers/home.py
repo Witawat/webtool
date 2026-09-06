@@ -33,6 +33,16 @@ async def tool_page(request: Request, slug: str):
     return render(request, templates, template_name, {"slug": slug})
 
 
+@router.get("/about")
+async def about(request: Request):
+    return render(request, templates, "about.html", {})
+
+
+@router.get("/disclaimer")
+async def disclaimer(request: Request):
+    return render(request, templates, "disclaimer.html", {})
+
+
 @router.get("/healthz")
 async def healthz():
     return {"status": "ok"}

@@ -12,6 +12,8 @@
   <nav class="nav">
     <a class="nav-logo" href="/">🛠️ WebTool</a>
     <div class="nav-right">
+      <a class="nav-link" href="/about">{{ t(lang, 'nav.about') }}</a>
+      <a class="nav-link" href="/disclaimer">{{ t(lang, 'nav.disclaimer') }}</a>
       <a class="nav-link" id="lang-switch" href="?lang={{ 'en' if lang == 'th' else 'th' }}">{{ t(lang, 'nav.lang') }}</a>
       <button class="nav-btn" id="theme-toggle" type="button" data-label-dark="{{ t(lang, 'nav.theme') }}" data-label-light="{{ t(lang, 'nav.theme_light') }}">{{ t(lang, 'nav.theme') }}</button>
     </div>

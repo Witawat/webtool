@@ -24,8 +24,8 @@
       '<div class="table-wrap"><table class="result-table"><thead><tr>';
     html += "<th>#</th>";
     html += "<th>" + esc(i18n("result.bulk.input")) + "</th>";
-    html += "<th>Status</th>";
-    html += "<th>Result</th>";
+    html += "<th>" + esc(i18n("result.bulk.status")) + "</th>";
+    html += "<th>" + esc(i18n("ui.result")) + "</th>";
     html += "</tr></thead><tbody>";
     data.results.forEach((r, idx) => {
       const badge = r.ok

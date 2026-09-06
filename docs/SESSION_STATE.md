@@ -44,21 +44,29 @@
 ## ✅ **Phase 3 จบ — premium** (180 passed, ruff ผ่าน)
 - **email-lookup** (commit `26cf23b`): providers/email.py (ไม่มี EMAIL_API_KEY → **TOOL_DISABLED 503**; มี key → คืน {email, provider, available:true, result:null} placeholder — ยังไม่มี provider จริง) + routers/email_lookup.py (rate 3/min) + template/js (หน้าแจ้ง "ต้องตั้งค่า EMAIL_API_KEY" เมื่อไม่มี key) + tests/test_email_lookup.py (parse_email + 503/400/429 + mock key) · เพิ่ม `parse_email` ใน core/validation.py
 
+## ✅ **Phase 4 จบ — polish** (189 passed, ruff ผ่าน)
+- **Bulk lookup** (commit `3592300`): services/bulk.py (registry 10 เครื่องมือ: dns/whois/subnet-calc/phone/ping/ssl/email-dns/reverse-ip/network-location/email-lookup · ≤10 ค่า · per-item timeout 20s · AppError → error แปลตาม lang) + routers/bulk.py (rate 5/min, GET /tools/bulk) + template/js (ตารางผล) + tests/test_bulk.py · ตรวจเบราว์เซอร์: subnet-calc 2 ค่า → ตาราง 2 แถว
+- **about/disclaimer**: routes /about + /disclaimer + templates + nav links (i18n nav.about/nav.disclaimer/page.*)
+- **README.md + CHANGELOG.md** (section v0.1.0 — release ใช้ย่อจากนี้)
+- i18n เต็ม: test_i18n full coverage th=en keys + tool 17 name/desc · แก้ string แข็ง bulk.js (Status/Result → i18n)
+- ⚠️ กับดักตอน edit i18n: แทนที่ block ที่มี nav.lang → เผลอตัด nav.lang th หาย (ต้องตรวจคืน)
+
 ## Active
-- **Phase 4 — polish** (ตาม PLAN §11): Bulk lookup (wrapper หลายค่า ใช้ validation+rate limit เดิม) · about/disclaimer/error/empty states · README.md + CHANGELOG.md (เริ่ม section v0.1.0) · แปลไทยเต็ม th/en ทุกหน้า · DoD: `pytest -m "not network"` + `ruff check .` ผ่าน
+- **Phase 5 — packaging (exe)** ตาม PLAN §13: assets/app.ico (Pillow จาก PNG) · ดาวน์โหลด upx → tools/upx/ · webtool.spec + build.bat + run-exe.bat · DoD: build.bat → dist\webtool.exe รันได้ + เปิด browser อัตโนมัติ + icon ติด
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **Bulk lookup**: wrapper รับหลายค่า (e.g. POST /api/bulk/{slug} รับ list) → วนเรียก service เดิม + rate limit · หน้า/page + js
-2. about/disclaimer/error/empty states (เช็คทุกหน้า) · แปลไทยเต็ม (verify ไม่มี string แข็ง)
-3. **README.md + CHANGELOG.md** (section v0.1.0)
-4. Phase 5: packaging (app.ico/upx/spec/build.bat) + release
+1. **assets/app.ico**: สร้าง PNG (Pillow) → save เป็น .ico (หลายขนาด)
+2. **upx** → tools/upx/upx.exe (ดาวน์โหลด; ไม่มี → spec ข้ามบีบ)
+3. **webtool.spec** (--onefile + icon + add-data templates;static + collect-all uvicorn/cryptography + UPX optional) + **build.bat** (ตั้ง UPX_DIR) + **run-exe.bat**
+4. main.py: รองรับ `--port`/`--no-browser`/`--headless` + เปิด browser อัตโนมัติ + log ไป logs\app.log (--noconsole)
+5. รัน build.bat → smoke test exe → release (สร้าง tools/release-notes-patch.py + gh release create + PATCH) ตาม PLAN §15
 
 ## คำสั่งยืนยัน
 - setup: `setup.bat` · dev: `run-dev.bat` · test: `pytest -m "not network"` · lint: `ruff check .` · build: `build.bat` (Phase 5)
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `26cf23b` feat(email-lookup): add reverse email lookup (premium, disabled without key) · version: 0.1.0
+- `3592300` feat(bulk): add bulk lookup wrapper · version: 0.1.0

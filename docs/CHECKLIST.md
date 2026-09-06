@@ -66,11 +66,11 @@
 - [x] DoD: ไม่มี key → 503 + หน้าแจ้ง "ต้องตั้ง key" · มี key → ทำงาน
 
 ## Phase 4 — polish
-- [ ] Bulk lookup (wrapper หลายค่า ใช้ validation+rate limit เดิม)
-- [ ] about / disclaimer / error / empty states
-- [ ] README.md + CHANGELOG.md (เริ่ม section v0.1.0)
-- [ ] แปลไทยเต็ม th/en ทุกหน้า
-- [ ] DoD: `pytest -m "not network"` + `ruff check .` ผ่าน
+- [x] Bulk lookup (wrapper หลายค่า ใช้ validation+rate limit เดิม)
+- [x] about / disclaimer / error / empty states
+- [x] README.md + CHANGELOG.md (เริ่ม section v0.1.0)
+- [x] แปลไทยเต็ม th/en ทุกหน้า
+- [x] DoD: `pytest -m "not network"` + `ruff check .` ผ่าน
 
 ## Phase 5 — packaging
 - [ ] assets/app.ico (Pillow จาก PNG)
