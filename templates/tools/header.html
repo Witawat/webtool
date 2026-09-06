@@ -1,0 +1,10 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field wide">
+  <label for="url">{{ t(lang, 'tool.header.url_label') }}</label>
+  <input type="text" id="url" name="url" placeholder="https://example.com" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.header.about') }}</p>
+{% endblock %}

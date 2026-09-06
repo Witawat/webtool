@@ -36,7 +36,7 @@
 - [x] 9. whois
 - [x] 10. asn-rdap
 - [x] 11. fetch
-- [ ] 12. header
+- [x] 12. header
 - [ ] 13. phone
 - [ ] 14. email-dns
 
