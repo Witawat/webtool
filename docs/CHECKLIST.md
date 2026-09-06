@@ -22,7 +22,7 @@
 - [x] setup.bat + run-dev.bat
 - [x] tests: conftest + test_validation / test_i18n / test_rate_limit / test_errors (+test_home)
 - [x] DoD: run-dev.bat → หน้า grid 17 การ์ด · สลับไทย/EN + dark/light · /healthz 200
-- [ ] commit แรก + `gh repo create Witawat/webtool --source . --remote origin --push`
+- [x] commit แรก + `gh repo create Witawat/webtool --source . --remote origin --push`
 
 ## Phase 1 — 14 self-host
 - [ ] 1. my-ip
