@@ -18,17 +18,18 @@
 - commit แรก → `gh repo create Witawat/webtool --public --source . --remote origin --push` สำเร็จ
 - **my-ip เสร็จ** (commit `dac7ac5`): services/my_ip.py (ip+version+hostname+geo null) + routers/my_ip.py (GET /tools/my-ip + POST /api/my-ip rate 60/min) + templates/tools/my-ip.html + static/js/tools/my-ip.js + tests/test_my_ip.py (schema + API + 429) · เพิ่ม tool.html (base หน้าเครื่องมือ) + main.py auto-discover router + json_ok helper · ทดสอบเบราว์เซอร์: ไทย/EN, AJAX ผล, title, favicon — 63 passed · ชื่อไทย my-ip = "ที่อยู่ IP ของฉัน"
 - **port-checker เสร็จ** (commit `2adf7a3`): services/port.py check_port (resolve→connect→state open/filtered/closed + latency + service) + routers/port_checker.py (rate 10/min, 400/429) + templates/tools/port-checker.html (host+port + Common Ports ปุ่มลัด chip) + static/js/tools/port-checker.js + tests/test_port_checker.py (unit + network marker + API) · ทดสอบเบราว์เซอร์: 8.8.8.8:443 → open + HTTPS + badge เขียว + ปุ่มลัดเติม port — 70 passed
+- **dns เสร็จ** (commit `687837a`): services/dns_lookup.py (dns.asyncresolver async ตรง + gather parallel + _format_value ต่อ type + reverse PTR ถ้าอินพุตเป็น IP) + routers/dns_lookup.py (rate 30/min, types validate 9 ตัว) + templates/tools/dns.html (checkbox types 9) + static/js/tools/dns.js (ตาราง Type/Name/TTL/Value) + tests/test_dns_lookup.py (format pure + API 400/429 + network จริง) · ทดสอบเบราว์เซอร์: example.com A/MX/TXT ตารางครบ + TTL — 80 passed + network 3 ผ่าน
 
 ## Active
-- **Phase 1 ตัวถัดไป: dns** (ลำดับ: my-ip ✓ → port-checker ✓ → dns → subnet-calc → port-scan → ping → traceroute → ssl → whois → asn-rdap → fetch → header → phone → email-dns)
-- dns schema §5.6: `{domain, types?}` → records[{type,name,ttl,value}] + reverse? · dns.asyncresolver.resolve(lifetime=DNS_TIMEOUT_S=5) · TXT value เป็น list · PTR แยก resolve_address · rate 30/min
+- **Phase 1 ตัวถัดไป: subnet-calc** (ลำดับ: my-ip ✓ → port-checker ✓ → dns ✓ → subnet-calc → port-scan → ping → traceroute → ssl → whois → asn-rdap → fetch → header → phone → email-dns)
+- subnet-calc schema §5.13: `{cidr}` → network/broadcast/netmask/wildcard/first_host/last_host/usable_hosts/total_hosts/prefix/ip_version · `ipaddress` pure **ไม่แตะ network** → rate สูง 60/min, ไม่ต้อง timeout · input ผ่าน parse_cidr
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **dns**: services/dns_lookup.py (dns.asyncresolver async ตรง ห้าม to_thread) + routers/dns_lookup.py (rate 30/min) + templates/tools/dns.html (domain + type multiselect) + static/js/tools/dns.js (render ตาราง) + tests/test_dns_lookup.py (unit mock + network marker) → ขีด CHECKLIST + commit `feat(dns): ...`
-2. ต่อ subnet-calc (pure, ง่าย) → port-scan (IP เดี่ยว ≤100, semaphore)
+1. **subnet-calc**: services/subnet_calc.py (pure ipaddress) + routers/subnet_calc.py (rate 60/min) + templates/tools/subnet-calc.html (cidr input) + static/js/tools/subnet-calc.js (render key-value) + tests/test_subnet_calc.py (pure unit ครบ) → ขีด CHECKLIST + commit `feat(subnet-calc): ...`
+2. ต่อ port-scan (IP เดี่ยว ≤100, semaphore) → ping (icmplib + TCP fallback)
 3. Phase 2: reverse_ip + network_location · Phase 3: reverse_email · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
 
 ## คำสั่งยืนยัน
@@ -36,4 +37,4 @@
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000`
 
 ## Commit ล่าสุด
-- `2adf7a3` feat(port-checker): add port check tool · version: 0.1.0
+- `687837a` feat(dns): add dns lookup tool · version: 0.1.0
