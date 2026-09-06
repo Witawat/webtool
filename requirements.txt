@@ -1,0 +1,18 @@
+fastapi
+uvicorn[standard]
+jinja2
+httpx
+dnspython
+python-whois
+icmplib
+phonenumbers
+cryptography
+pydantic-settings
+geoip2
+
+# dev
+pytest
+pytest-asyncio
+ruff
+pyinstaller
+pillow

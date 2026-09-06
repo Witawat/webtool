@@ -1,0 +1,141 @@
+from __future__ import annotations
+
+from .errors import ERROR_MESSAGES
+
+_STRINGS = {
+    "th": {
+        "nav.home": "หน้าแรก",
+        "nav.tools": "เครื่องมือ",
+        "nav.lang": "English",
+        "nav.theme": "โหมดมืด",
+        "nav.theme_light": "โหมดสว่าง",
+        "common.check": "ตรวจสอบ",
+        "common.loading": "กำลังตรวจสอบ...",
+        "common.duration": "ใช้เวลา {ms} ms",
+        "common.seconds": "{s} วินาที",
+        "common.unknown": "ไม่ทราบ",
+        "common.copy": "คัดลอก",
+        "common.copied": "คัดลอกแล้ว!",
+        "ui.about": "เกี่ยวกับเครื่องมือนี้",
+        "ui.disclaimer": "เครื่องมือนี้มีไว้เพื่อการวินิจฉัยเครือข่ายและเพื่อการศึกษาเท่านั้น กรุณาใช้กับทรัพยากรที่คุณได้รับอนุญาตเท่านั้น",
+        "ui.footer": "เครื่องมือเครือข่ายฟรี — ข้อมูลทั้งหมดคำนวณแบบเรียลไทม์ ไม่มีการเก็บข้อมูลของคุณ",
+        "ui.provider": "แหล่งข้อมูล: {provider}",
+        "ui.result": "ผลลัพธ์",
+        "home.title": "เครื่องมือเครือข่าย",
+        "home.subtitle": "ชุดเครื่องมือตรวจสอบเครือข่ายฟรีสไตล์ yougetsignal — ตรวจพอร์ต, DNS, SSL, WHOIS และอื่น ๆ อีกมากมาย",
+        "home.tools_count": "เครื่องมือ {count} รายการ",
+        "tool.my-ip.name": "What Is My IP",
+        "tool.my-ip.desc": "ดูที่อยู่ IP สาธารณะและตำแหน่งโดยประมาณของคุณ",
+        "tool.port-checker.name": "Port Checker",
+        "tool.port-checker.desc": "ตรวจสอบว่าพอร์ตใดเปิด/ปิดบนโฮสต์ที่กำหนด",
+        "tool.port-scan.name": "Port Range Scanner",
+        "tool.port-scan.desc": "สแกนช่วงพอร์ตเพื่อค้นหาพอร์ตที่เปิดอยู่",
+        "tool.ping.name": "Ping",
+        "tool.ping.desc": "วัดเวลาแฝง (latency) และอัตราการตอบสนองของโฮสต์",
+        "tool.traceroute.name": "Traceroute",
+        "tool.traceroute.desc": "ติดตามเส้นทางที่ข้อมูลเดินทางไปยังโฮสต์ปลายทาง",
+        "tool.dns.name": "DNS Lookup",
+        "tool.dns.desc": "ค้นหาเรกคอร์ด DNS หลากหลายประเภทของโดเมน",
+        "tool.email-dns.name": "E-mail Domain DNS",
+        "tool.email-dns.desc": "วิเคราะห์ MX, SPF, DKIM และ DMARC ของโดเมนอีเมล",
+        "tool.ssl.name": "SSL/TLS Checker",
+        "tool.ssl.desc": "ตรวจสอบใบรับรอง SSL/TLS และรายละเอียดการเชื่อมต่อ",
+        "tool.whois.name": "WHOIS Lookup",
+        "tool.whois.desc": "ค้นหาข้อมูลเจ้าของและรายละเอียดการจดทะเบียนโดเมน",
+        "tool.asn-rdap.name": "ASN / IP WHOIS (RDAP)",
+        "tool.asn-rdap.desc": "ค้นหาข้อมูลเจ้าของช่วง IP หรือหมายเลข ASN",
+        "tool.fetch.name": "Fetch",
+        "tool.fetch.desc": "ส่งคำขอ HTTP แบบกำหนดเองและดูการตอบกลับแบบดิบ",
+        "tool.header.name": "HTTP Header Checker",
+        "tool.header.desc": "ตรวจสอบส่วนหัว HTTP และคะแนนความปลอดภัยของเว็บไซต์",
+        "tool.subnet-calc.name": "Subnet/CIDR Calculator",
+        "tool.subnet-calc.desc": "คำนวณช่วงที่อยู่ เครือข่าย และจำนวนโฮสต์ของ CIDR",
+        "tool.phone.name": "Phone Number Geolocator",
+        "tool.phone.desc": "ระบุประเทศ/ภูมิภาค/ผู้ให้บริการของหมายเลขโทรศัพท์",
+        "tool.reverse-ip.name": "Reverse IP Lookup",
+        "tool.reverse-ip.desc": "ค้นหาโดเมนทั้งหมดที่โฮสต์บนที่อยู่ IP เดียวกัน",
+        "tool.network-location.name": "Network Location",
+        "tool.network-location.desc": "แสดงตำแหน่งโดยประมาณของ IP บนแผนที่",
+        "tool.email-lookup.name": "Reverse E-mail Lookup",
+        "tool.email-lookup.desc": "ค้นหาข้อมูลที่เกี่ยวข้องกับที่อยู่อีเมล (ต้องตั้งค่า API key)",
+    },
+    "en": {
+        "nav.home": "Home",
+        "nav.tools": "Tools",
+        "nav.lang": "ไทย",
+        "nav.theme": "Dark mode",
+        "nav.theme_light": "Light mode",
+        "common.check": "Check",
+        "common.loading": "Checking...",
+        "common.duration": "took {ms} ms",
+        "common.seconds": "{s} seconds",
+        "common.unknown": "Unknown",
+        "common.copy": "Copy",
+        "common.copied": "Copied!",
+        "ui.about": "About this tool",
+        "ui.disclaimer": "These tools are provided for network diagnostics and education only. Use them only against resources you are authorized to test.",
+        "ui.footer": "Free network tools — all results are computed in real time, nothing is stored.",
+        "ui.provider": "Data: {provider}",
+        "ui.result": "Result",
+        "home.title": "Network Tools",
+        "home.subtitle": "Free network diagnostic tools in the style of yougetsignal — port check, DNS, SSL, WHOIS and more",
+        "home.tools_count": "{count} tools",
+        "tool.my-ip.name": "What Is My IP",
+        "tool.my-ip.desc": "See your public IP address and approximate location",
+        "tool.port-checker.name": "Port Checker",
+        "tool.port-checker.desc": "Check whether a port is open or closed on a host",
+        "tool.port-scan.name": "Port Range Scanner",
+        "tool.port-scan.desc": "Scan a range of ports to find open ones",
+        "tool.ping.name": "Ping",
+        "tool.ping.desc": "Measure latency and packet response of a host",
+        "tool.traceroute.name": "Traceroute",
+        "tool.traceroute.desc": "Trace the path packets take to a destination host",
+        "tool.dns.name": "DNS Lookup",
+        "tool.dns.desc": "Look up various DNS record types for a domain",
+        "tool.email-dns.name": "E-mail Domain DNS",
+        "tool.email-dns.desc": "Analyze MX, SPF, DKIM and DMARC of an e-mail domain",
+        "tool.ssl.name": "SSL/TLS Checker",
+        "tool.ssl.desc": "Inspect SSL/TLS certificates and connection details",
+        "tool.whois.name": "WHOIS Lookup",
+        "tool.whois.desc": "Look up domain ownership and registration details",
+        "tool.asn-rdap.name": "ASN / IP WHOIS (RDAP)",
+        "tool.asn-rdap.desc": "Look up ownership of an IP range or ASN number",
+        "tool.fetch.name": "Fetch",
+        "tool.fetch.desc": "Send a custom HTTP request and view the raw response",
+        "tool.header.name": "HTTP Header Checker",
+        "tool.header.desc": "Inspect HTTP headers and a website security score",
+        "tool.subnet-calc.name": "Subnet/CIDR Calculator",
+        "tool.subnet-calc.desc": "Compute address range, network and host count of a CIDR",
+        "tool.phone.name": "Phone Number Geolocator",
+        "tool.phone.desc": "Find the country/region/carrier of a phone number",
+        "tool.reverse-ip.name": "Reverse IP Lookup",
+        "tool.reverse-ip.desc": "Find all domains hosted on the same IP address",
+        "tool.network-location.name": "Network Location",
+        "tool.network-location.desc": "Show the approximate location of an IP on a map",
+        "tool.email-lookup.name": "Reverse E-mail Lookup",
+        "tool.email-lookup.desc": "Find information related to an e-mail address (API key required)",
+    },
+}
+
+DEFAULT_LANG = "th"
+
+
+def t(lang: str, key: str, **fmt) -> str:
+    lang = lang if lang in _STRINGS else DEFAULT_LANG
+    table = _STRINGS[lang]
+    value = table.get(key, key)
+    if fmt:
+        try:
+            return value.format(**fmt)
+        except (KeyError, IndexError):
+            return value
+    return value
+
+
+def all_strings(lang: str) -> dict[str, str]:
+    lang = lang if lang in _STRINGS else DEFAULT_LANG
+    merged = dict(_STRINGS[lang])
+    err_table = ERROR_MESSAGES.get(lang, ERROR_MESSAGES[DEFAULT_LANG])
+    for code, msg in err_table.items():
+        merged[f"err.{code}"] = msg
+    return merged

@@ -1,0 +1,20 @@
+[project]
+name = "webtool"
+version = "0.1.0"
+description = "Free network diagnostic tools (yougetsignal-style) with Thai/EN UI"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "network: tests that hit the real network (skipped by default)",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = ["E501"]

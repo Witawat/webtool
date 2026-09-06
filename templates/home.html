@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ t(lang, 'home.title') }} · WebTool{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ t(lang, 'home.title') }}</h1>
+  <p class="subtitle">{{ t(lang, 'home.subtitle') }}</p>
+  <p class="count">{{ t(lang, 'home.tools_count', count=tool_count) }}</p>
+</section>
+<section class="tool-grid">
+  {% for tool in tools %}
+  <a class="tool-card" href="/tools/{{ tool.slug }}">
+    <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
+    <div class="tool-text">
+      <h3>{{ t(lang, 'tool.' + tool.slug + '.name') }}</h3>
+      <p>{{ t(lang, 'tool.' + tool.slug + '.desc') }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+.env
+.venv/
+dist/
+build/
+__pycache__/
+logs/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.playwright-mcp/
+*.log
