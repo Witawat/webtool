@@ -32,7 +32,7 @@
 - [x] 5. port-scan
 - [x] 6. ping
 - [x] 7. traceroute
-- [ ] 8. ssl
+- [x] 8. ssl
 - [ ] 9. whois
 - [ ] 10. asn-rdap
 - [ ] 11. fetch
