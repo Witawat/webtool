@@ -54,11 +54,11 @@
 **จบเฟส:** 14 ตัวครบ · `pytest -m "not network"` = 155 passed · `ruff check .` ผ่าน ✅
 
 ## Phase 2 — external
-- [ ] providers/geoip.py (ip-api http → MaxMind geoip2 ถ้ามี key)
-- [ ] providers/reverse_ip.py (HackerTarget, parse ข้อความล้วน)
-- [ ] reverse_ip: router + page + js + test (mock provider)
-- [ ] network_location: router + page + js + Leaflet map + test (mock provider)
-- [ ] DoD: หน้าแจ้ง provider · mock test ผ่าน · ip-api http ใช้ได้จริง
+- [x] providers/geoip.py (ip-api http → MaxMind geoip2 ถ้ามี key)
+- [x] providers/reverse_ip.py (HackerTarget, parse ข้อความล้วน)
+- [x] reverse_ip: router + page + js + test (mock provider)
+- [x] network_location: router + page + js + Leaflet map + test (mock provider)
+- [x] DoD: หน้าแจ้ง provider · mock test ผ่าน · ip-api http ใช้ได้จริง
 
 ## Phase 3 — premium
 - [ ] providers/email.py (EMAIL_API_KEY)

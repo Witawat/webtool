@@ -34,23 +34,26 @@
 
 ## ✅ **Phase 1 จบ — 14 self-host ครบ** · `pytest -m "not network"` = 155 passed · `ruff check .` ผ่าน · ทุกตัวตรวจเบราว์เซอร์แล้ว (ภาษาไทย/EN + AJAX + badge)
 
+## ✅ **Phase 2 จบ — external** (171 passed, ruff ผ่าน)
+- **providers/geoip.py**: ip-api **http** (`http://ip-api.com/json/<q>?fields=...`) default · ถ้า `MAXMIND_DB_PATH` (เพิ่มใน config/.env.example) → geoip2 GeoLite2 (to_thread, resolve domain ก่อน) · คืน dict {query,ip,city,region,country,country_code,lat,lon,isp,org,asn,provider}
+- **providers/reverse_ip.py**: HackerTarget `reverseiplookup/?q=<ip>` (ข้อความล้วน) + `is_upstream_error` (error/API count exceeded) + `parse_domains` · key append `&key=` ถ้ามี
+- **reverse-ip** (commit `3cacfd7`): router rate 3/min + SSRF (block internal IP) + template/js (ตารางโดเมน + count) + test (mock provider + network) · 8.8.8.8 → 500 โดเมน
+- **network-location** (commit `e9b909e`): router rate 10/min + SSRF (IP internal หรือ domain resolve → internal block) + template/js + **Leaflet map** (CDN unpkg, extra_head/extra_scripts block ใน base.html) + test (mock + ip-api จริง) · 8.8.8.8 → Ashburn/US + map
+- ⚠️ กับดัก: PS 5.1 `Set-Content -Encoding UTF8` เติม BOM → เขียนไฟล์โค้ดใหม่ต้อง UTF8-no-BOM (เจอตอน rename validation.py) · SSRF guard ใช้ public `is_forbidden_ip`/`resolve_host_ips` (rename จาก _private ใน validation)
+
 ## Active
-- **Phase 2 — external** (reverse_ip, network_location): สร้าง providers/ ตาม PLAN §5.15/§5.16
-- reverse_ip §5.15: HackerTarget `GET https://api.hackertarget.com/reverseiplookup/?q=<ip>` → ข้อความล้วน (บรรทัดละ domain, `error`/`API count exceeded` = UPSTREAM_ERROR) · rate 3/min · HACKERTARGET_KEY ไม่บังคับ (มี → append &key=) · แสดง provider ในหน้า
-- network_location §5.16: **`http://ip-api.com/json/<ip>?fields=...`** (ฟรี = HTTP เท่านั้น) → ถ้า MAXMIND_KEY → geoip2 แทน · rate 10/min · แสดงผลบนแผนที่ Leaflet CDN
+- **Phase 3 — premium (reverse_email)** §5.17: `{email}` → provider/available/result · ต้อง `EMAIL_API_KEY` (provider เสียเงิน) → ถ้าไม่มี key คืน `TOOL_DISABLED` (503) + หน้าแจ้ง "ต้องตั้ง key" · rate 3/min
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **providers/geoip.py** (ip-api http → MaxMind ถ้ามี key) + **providers/reverse_ip.py** (HackerTarget, parse ข้อความ) + ตรวจ providers/__init__.py
-2. **reverse_ip**: services/routers/template/js/test (mock provider) → commit `feat(reverse-ip): ...`
-3. **network_location**: router/page/js + **Leaflet map** + test (mock) → commit `feat(network-location): ...`
-4. Phase 3: reverse_email (premium) · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
+1. **providers/email.py** (EMAIL_API_KEY — provider abstraction) + **email_lookup**: router/page/js (ไม่มี key → 503 + หน้าแจ้ง) + test (no key → 503, mock provider)
+2. Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
 
 ## คำสั่งยืนยัน
 - setup: `setup.bat` · dev: `run-dev.bat` · test: `pytest -m "not network"` · lint: `ruff check .` · build: `build.bat` (Phase 5)
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `b920978` feat(email-dns): add email domain dns analysis tool · version: 0.1.0
+- `e9b909e` feat(network-location): add network location with leaflet map · version: 0.1.0
