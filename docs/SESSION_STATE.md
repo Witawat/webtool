@@ -25,17 +25,18 @@
 - **traceroute เสร็จ** (commit `fff8fdb`): services/traceroute.py (icmplib.traceroute sync → asyncio.to_thread) + routers/traceroute.py (rate 3/min, max_hops 3-30) + template/js (ตาราง hop) + tests/test_traceroute.py — 107 passed · ทดสอบจริง 1.1.1.1 → 5 hops + rtt
   - ⚠️ **icmplib 3.0.4 gotchas**: ไม่มี async_traceroute (มีแค่ traceroute sync → to_thread) · traceroute ไม่รับ privileged (ต้อง raw socket เสมอ) · Hop object มี `distance` ไม่มี `ttl` (แมป ttl=distance) · rtts sanitize None/inf
 - **ssl เสร็จ** (commit `0c52dbf`): services/ssl_checker.py (ssl.CERT_NONE+check_hostname=False เพื่อดึง cert แม้ไม่ผ่าน verify → cryptography แยก field + _host_matches wildcard + warnings expired/expires_soon/self_signed/hostname_mismatch) + routers/ssl_checker.py (rate 10/min, port default 443) + template/js (banner เตือน + การ์ด cert) + tests/test_ssl_checker.py — 117 passed · ทดสอบจริง example.com → TLSv1.3 + cert ครบ (เจอ/แก้ bug: _cert_info ลืมคืน key warnings)
+- **whois เสร็จ** (commit `60429c7`): services/whois.py (**python-whois ใน asyncio.to_thread** + _as_list/_fmt_date + tld_privacy จาก hint "privacy/redacted") + routers/whois.py (parse_domain เท่านั้น ไม่รับ IP, rate 10/min) + template/js (การ์ด + raw_text collapsible) + tests/test_whois.py — 126 passed · ทดสอบจริง example.com → registrar RESERVED-IANA (เจอ/แก้ bug: whois.js rows() ไม่ return html)
 
 ## Active
-- **Phase 1 ตัวถัดไป: whois** (ลำดับ: my-ip ✓ → port-checker ✓ → dns ✓ → subnet-calc ✓ → port-scan ✓ → ping ✓ → traceroute ✓ → ssl ✓ → whois → asn-rdap → fetch → header → phone → email-dns) — เหลือ 6 ตัว
-- whois schema §5.9: `{domain}` → registrar/created/updated/expires/status[]/nameservers[]/raw_text/tld_privacy · **python-whois ใน asyncio.to_thread** (blocking!) + timeout · domain เป็นหลัก (IP → ใช้ asn-rdap) · rate 10/min
+- **Phase 1 ตัวถัดไป: asn-rdap** (ลำดับ: my-ip ✓ → port-checker ✓ → dns ✓ → subnet-calc ✓ → port-scan ✓ → ping ✓ → traceroute ✓ → ssl ✓ → whois ✓ → asn-rdap → fetch → header → phone → email-dns) — เหลือ 5 ตัว
+- asn-rdap schema §5.10: `{ip}` หรือ `{asn}` → handle/name/type/start_address/end_address/cidr/country/asn{number,name}/org{handle,name}/source · httpx.AsyncClient(follow_redirects=True) → https://rdap.org/ip/<ip> หรือ /autnum/<asn> (301 → RIR) · ไม่ต้อง key · rate 20/min
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **whois**: services/whois.py (python-whois in asyncio.to_thread + timeout) + routers/whois.py (rate 10/min) + templates/tools/whois.html + static/js/tools/whois.js (การ์ด key-value + raw_text collapsible) + tests/test_whois.py → ขีด CHECKLIST + commit `feat(whois): ...`
-2. ต่อ asn-rdap (httpx rdap.org) → fetch → header → phone → email-dns (จบ Phase 1)
+1. **asn-rdap**: services/rdap_asn.py (httpx rdap.org + redirect ตาม RIR) + routers/asn_rdap.py (rate 20/min, รับ ip หรือ asn) + templates/tools/asn-rdap.html + static/js/tools/asn-rdap.js (การ์ด key-value) + tests/test_asn_rdap.py (mock provider + network) → ขีด CHECKLIST + commit `feat(asn-rdap): ...`
+2. ต่อ fetch → header → phone → email-dns (จบ Phase 1)
 3. Phase 2: reverse_ip + network_location · Phase 3: reverse_email · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
 
 ## คำสั่งยืนยัน
@@ -43,4 +44,4 @@
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `0c52dbf` feat(ssl): add ssl/tls checker tool · version: 0.1.0
+- `60429c7` feat(whois): add whois lookup tool · version: 0.1.0
