@@ -1,0 +1,16 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field wide">
+  <label for="query">{{ t(lang, 'tool.network-location.query_label') }}</label>
+  <input type="text" id="query" name="query" placeholder="8.8.8.8" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.network-location.about') }} · <span class="provider-note">{{ t(lang, 'ui.provider', provider='ip-api.com') }}</span></p>
+{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+{% endblock %}
