@@ -31,7 +31,7 @@
 - [x] 4. subnet-calc
 - [x] 5. port-scan
 - [x] 6. ping
-- [ ] 7. traceroute
+- [x] 7. traceroute
 - [ ] 8. ssl
 - [ ] 9. whois
 - [ ] 10. asn-rdap
