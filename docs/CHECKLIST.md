@@ -73,10 +73,10 @@
 - [x] DoD: `pytest -m "not network"` + `ruff check .` ผ่าน
 
 ## Phase 5 — packaging
-- [ ] assets/app.ico (Pillow จาก PNG)
-- [ ] upx → tools/upx/
-- [ ] webtool.spec + build.bat + run-exe.bat
-- [ ] DoD: build.bat → dist\webtool.exe รันได้ + เปิด browser อัตโนมัติ + icon ติด
+- [x] assets/app.ico (Pillow จาก PNG)
+- [x] upx → tools/upx/ — **ข้ามได้ (optional)** · build.bat รองรับ UPX_DIR ถ้าดาวน์โหลด upx มาใส่ tools\upx\ (UPX + port scanner = AV false positive)
+- [x] webtool.spec + build.bat + run-exe.bat
+- [x] DoD: build.bat → dist\webtool.exe รันได้ + เปิด browser อัตโนมัติ + icon ติด
 
 ## Release (หลัง Phase 5)
 - [ ] สร้าง tools/release-notes-patch.py (คัดลอกต้นแบบ → DEFAULT_REPO=Witawat/webtool → commit)

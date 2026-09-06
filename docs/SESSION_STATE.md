@@ -51,22 +51,33 @@
 - i18n เต็ม: test_i18n full coverage th=en keys + tool 17 name/desc · แก้ string แข็ง bulk.js (Status/Result → i18n)
 - ⚠️ กับดักตอน edit i18n: แทนที่ block ที่มี nav.lang → เผลอตัด nav.lang th หาย (ต้องตรวจคืน)
 
+## ✅ **Phase 5 จบ — packaging exe** (189 passed, ruff ผ่าน)
+- **assets/app.ico** (Pillow: วงกลมฟ้า + W + จุด — สร้างด้วยสคริปต์ชั่วคราว)
+- **main.py**: static import routers 18 ตัว (PyInstaller วิเคราะห์ไม่เห็น dynamic import → ModuleNotFoundError) · CLI `--host/--port/--no-browser/--headless` + เปิด browser อัตโนมัติ + stdout/stderr fallback (devnull) + uvicorn log_config ปลอดภัย (formatter ไม่พึ่ง isatty)
+- **core/paths.py**: frozen → TEMPLATES/STATIC จาก _MEIPASS, **LOGS_DIR = exe dir\logs** (ไม่ใช่ temp)
+- **webtool.spec** (onefile + icon + add-data templates/static + hiddenimports uvicorn loops/protocols/cryptography/python_multipart + UPX optional จาก UPX_DIR env) · **build.bat** (-y + PATH ใส่ UPX_DIR) · **run-exe.bat** (start /min)
+- **Smoke test ผ่าน**: dist\webtool.exe → healthz ok + home 17 cards + api subnet/port-checker 200 + app.log ที่ dist\logs + **browser เปิดอัตโนมัติ** (มี request จาก browser ใน log) · exe 20.4MB
+- ⚠️ **กับดัก packaging (สำคัญ):**
+  1. **windowed (console=False) exe ค้างก่อน Python เริ่ม** บนเครื่องนี้ (GUI subsystem) → ใช้ **console=True** + run-exe.bat `start /min` (ยอมหน้าต่าง minimized) — บันทึก: ถ้าจะใช้ windowed ต้องทดสอบบนเครื่องมี desktop
+  2. **uvicorn formatter crash** `'NoneType' object has no attribute 'isatty'` เมื่อ sys.stdout=None → fallback devnull + log_config กำหนดเอง (formatter ธรรมดา)
+  3. **pkgutil.iter_modules ใช้ไม่ได้ใน frozen** (ไม่เห็น routers) + **dynamic importlib ใช้ไม่ได้** → ต้อง static import
+  4. logs ต้องอยู่ exe dir (LOG_DIR=DATA_DIR/logs) ไม่ใช่ _MEIPASS (temp หาย)
+
 ## Active
-- **Phase 5 — packaging (exe)** ตาม PLAN §13: assets/app.ico (Pillow จาก PNG) · ดาวน์โหลด upx → tools/upx/ · webtool.spec + build.bat + run-exe.bat · DoD: build.bat → dist\webtool.exe รันได้ + เปิด browser อัตโนมัติ + icon ติด
+- **Release v0.1.0** (PLAN §15): สร้าง `tools/release-notes-patch.py` ในโปรเจกต์ (คัดลอกต้นแบบ Cloudflare → DEFAULT_REPO=Witawat/webtool → commit) · เขียน notes.md (write tool UTF-8) · `gh release create v0.1.0 --notes-file ... dist\webtool.exe` · PATCH SHA256 + body (กัน mojibake ไทย) · ตรวจ .checked ด้วย read tool
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **assets/app.ico**: สร้าง PNG (Pillow) → save เป็น .ico (หลายขนาด)
-2. **upx** → tools/upx/upx.exe (ดาวน์โหลด; ไม่มี → spec ข้ามบีบ)
-3. **webtool.spec** (--onefile + icon + add-data templates;static + collect-all uvicorn/cryptography + UPX optional) + **build.bat** (ตั้ง UPX_DIR) + **run-exe.bat**
-4. main.py: รองรับ `--port`/`--no-browser`/`--headless` + เปิด browser อัตโนมัติ + log ไป logs\app.log (--noconsole)
-5. รัน build.bat → smoke test exe → release (สร้าง tools/release-notes-patch.py + gh release create + PATCH) ตาม PLAN §15
+1. **สร้าง tools/release-notes-patch.py** (คัดลอกจาก D:\MyCode\Cloudflare\tools\release-notes-patch.py → ปรับ DEFAULT_REPO=Witawat/webtool) + commit `chore(release): add release-notes-patch script`
+2. เขียน CHANGELOG section v0.1.0 (มีแล้ว) → เขียน notes.md ตาม template release-notes
+3. `gh release create v0.1.0 --repo Witawat/webtool --title "WebTool v0.1.0" --notes-file notes.md dist\webtool.exe`
+4. `.venv\Scripts\python tools\release-notes-patch.py v0.1.0 notes.md --repo Witawat/webtool` → ตรวจ `.checked` ด้วย read tool
 
 ## คำสั่งยืนยัน
 - setup: `setup.bat` · dev: `run-dev.bat` · test: `pytest -m "not network"` · lint: `ruff check .` · build: `build.bat` (Phase 5)
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `3592300` feat(bulk): add bulk lookup wrapper · version: 0.1.0
+- `3592300` feat(bulk): add bulk lookup wrapper · version: 0.1.0 · **Phase 1-5 ครบ** — เหลือ release v0.1.0
