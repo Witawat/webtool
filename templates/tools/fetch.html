@@ -1,0 +1,29 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="method">{{ t(lang, 'tool.fetch.method_label') }}</label>
+  <select id="method" name="method">
+    {% for m in methods %}<option value="{{ m }}" {% if m == 'GET' %}selected{% endif %}>{{ m }}</option>{% endfor %}
+  </select>
+</div>
+<div class="field wide">
+  <label for="url">{{ t(lang, 'tool.fetch.url_label') }}</label>
+  <input type="text" id="url" name="url" placeholder="https://example.com" required>
+</div>
+<div class="field wide">
+  <label for="headers">{{ t(lang, 'tool.fetch.headers_label') }}</label>
+  <textarea id="headers" name="headers" rows="3" placeholder="User-Agent: WebTool/0.1"></textarea>
+</div>
+<div class="field wide">
+  <label for="body">{{ t(lang, 'tool.fetch.body_label') }}</label>
+  <textarea id="body" name="body" rows="3"></textarea>
+</div>
+<div class="field">
+  <label class="chip-check">
+    <input type="checkbox" id="follow" name="follow" checked> {{ t(lang, 'tool.fetch.follow_label') }}
+  </label>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.fetch.about') }}</p>
+{% endblock %}

@@ -234,6 +234,27 @@ body {
   border-color: var(--accent);
 }
 
+.tool-form .field.wide {
+  flex: 1 1 100%;
+}
+
+.tool-form textarea {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  resize: vertical;
+  width: 100%;
+}
+
+.tool-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 .btn {
   padding: 0.5rem 1.25rem;
   border: none;
