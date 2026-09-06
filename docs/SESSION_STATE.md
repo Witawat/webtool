@@ -16,17 +16,19 @@
 - ทดสอบจริง: `pytest -m "not network"` = **58 passed** · `ruff check .` = ผ่าน · เปิดเบราว์เซอร์ตรวจ DoD: หน้า grid 17 การ์ด, สลับไทย/EN, dark/light (แก้บั๊กปุ่ม theme กลับข้าง), /healthz 200, favicon SVG data-URI
 - แก้ระหว่างทำ: validate_url_safe รองรับ IPv6 bracket + localhost (SSRF block), ruff UP045/UP035/UP047/UP041/B904
 - commit แรก → `gh repo create Witawat/webtool --public --source . --remote origin --push` สำเร็จ
+- **my-ip เสร็จ** (commit `dac7ac5`): services/my_ip.py (ip+version+hostname+geo null) + routers/my_ip.py (GET /tools/my-ip + POST /api/my-ip rate 60/min) + templates/tools/my-ip.html + static/js/tools/my-ip.js + tests/test_my_ip.py (schema + API + 429) · เพิ่ม tool.html (base หน้าเครื่องมือ) + main.py auto-discover router + json_ok helper · ทดสอบเบราว์เซอร์: ไทย/EN, AJAX ผล, title, favicon — 63 passed · ชื่อไทย my-ip = "ที่อยู่ IP ของฉัน"
 
 ## Active
-- ยังไม่เริ่ม Phase 1 — ขั้นถัดไป: **เครื่องมือตัวแรก my-ip** ตาม CHECKLIST Phase 1 (ลำดับ: my-ip → port-checker → dns → subnet-calc → port-scan → ping → traceroute → ssl → whois → asn-rdap → fetch → header → phone → email-dns)
+- **Phase 1 ตัวถัดไป: port-checker** (ลำดับ: my-ip ✓ → port-checker → dns → subnet-calc → port-scan → ping → traceroute → ssl → whois → asn-rdap → fetch → header → phone → email-dns)
 - ต่อเครื่องมือ: services/<slug>.py + routers/<slug>.py + templates/tools/<slug>.html + static/js/tools/<slug>.js + tests/test_<slug>.py (คุณภาพขั้นต่ำ 7 ข้อใน CHECKLIST)
+- port-checker schema §5.2: `{host, port}` → open/filtered/closed + service (PORT_NAMES) + latency_ms · asyncio.open_connection + PORT_TIMEOUT_S=3.0 · rate 10/min · input ผ่าน validation parse_host/parse_port
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. Phase 1 ตัวแรก: **my-ip** — services/my_ip.py (IP จาก request.client.host + geo จาก provider geoip ถ้ามี) + routers/my_ip.py (GET /tools/my-ip + POST /api/my-ip rate 60/min) + templates/tools/my-ip.html + static/js/tools/my-ip.js + tests/test_my_ip.py → ขีด CHECKLIST
-2. ต่อ port-checker → dns → subnet-calc (ตามลำดับ PLAN)
+1. **port-checker**: services/port.py check_port() + routers/port_checker.py + templates/tools/port-checker.html (host+port field + Common Ports ปุ่มลัด) + static/js/tools/port-checker.js + tests/test_port_checker.py (edge: 400/429, network จริง marker) → ขีด CHECKLIST + commit `feat(port-checker): ...`
+2. ต่อ dns → subnet-calc → port-scan (ตามลำดับ PLAN)
 3. Phase 2: reverse_ip + network_location · Phase 3: reverse_email · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
 
 ## คำสั่งยืนยัน
@@ -34,4 +36,4 @@
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000`
 
 ## Commit ล่าสุด
-- `954f208` chore: scaffold project skeleton (Phase 0) · version: 0.1.0
+- `dac7ac5` feat(my-ip): add what is my ip tool · version: 0.1.0
