@@ -41,19 +41,24 @@
 - **network-location** (commit `e9b909e`): router rate 10/min + SSRF (IP internal หรือ domain resolve → internal block) + template/js + **Leaflet map** (CDN unpkg, extra_head/extra_scripts block ใน base.html) + test (mock + ip-api จริง) · 8.8.8.8 → Ashburn/US + map
 - ⚠️ กับดัก: PS 5.1 `Set-Content -Encoding UTF8` เติม BOM → เขียนไฟล์โค้ดใหม่ต้อง UTF8-no-BOM (เจอตอน rename validation.py) · SSRF guard ใช้ public `is_forbidden_ip`/`resolve_host_ips` (rename จาก _private ใน validation)
 
+## ✅ **Phase 3 จบ — premium** (180 passed, ruff ผ่าน)
+- **email-lookup** (commit `26cf23b`): providers/email.py (ไม่มี EMAIL_API_KEY → **TOOL_DISABLED 503**; มี key → คืน {email, provider, available:true, result:null} placeholder — ยังไม่มี provider จริง) + routers/email_lookup.py (rate 3/min) + template/js (หน้าแจ้ง "ต้องตั้งค่า EMAIL_API_KEY" เมื่อไม่มี key) + tests/test_email_lookup.py (parse_email + 503/400/429 + mock key) · เพิ่ม `parse_email` ใน core/validation.py
+
 ## Active
-- **Phase 3 — premium (reverse_email)** §5.17: `{email}` → provider/available/result · ต้อง `EMAIL_API_KEY` (provider เสียเงิน) → ถ้าไม่มี key คืน `TOOL_DISABLED` (503) + หน้าแจ้ง "ต้องตั้ง key" · rate 3/min
+- **Phase 4 — polish** (ตาม PLAN §11): Bulk lookup (wrapper หลายค่า ใช้ validation+rate limit เดิม) · about/disclaimer/error/empty states · README.md + CHANGELOG.md (เริ่ม section v0.1.0) · แปลไทยเต็ม th/en ทุกหน้า · DoD: `pytest -m "not network"` + `ruff check .` ผ่าน
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **providers/email.py** (EMAIL_API_KEY — provider abstraction) + **email_lookup**: router/page/js (ไม่มี key → 503 + หน้าแจ้ง) + test (no key → 503, mock provider)
-2. Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
+1. **Bulk lookup**: wrapper รับหลายค่า (e.g. POST /api/bulk/{slug} รับ list) → วนเรียก service เดิม + rate limit · หน้า/page + js
+2. about/disclaimer/error/empty states (เช็คทุกหน้า) · แปลไทยเต็ม (verify ไม่มี string แข็ง)
+3. **README.md + CHANGELOG.md** (section v0.1.0)
+4. Phase 5: packaging (app.ico/upx/spec/build.bat) + release
 
 ## คำสั่งยืนยัน
 - setup: `setup.bat` · dev: `run-dev.bat` · test: `pytest -m "not network"` · lint: `ruff check .` · build: `build.bat` (Phase 5)
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `e9b909e` feat(network-location): add network location with leaflet map · version: 0.1.0
+- `26cf23b` feat(email-lookup): add reverse email lookup (premium, disabled without key) · version: 0.1.0

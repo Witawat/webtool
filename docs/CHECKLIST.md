@@ -61,9 +61,9 @@
 - [x] DoD: หน้าแจ้ง provider · mock test ผ่าน · ip-api http ใช้ได้จริง
 
 ## Phase 3 — premium
-- [ ] providers/email.py (EMAIL_API_KEY)
-- [ ] email_lookup: router + page + js (ไม่มี key → TOOL_DISABLED 503)
-- [ ] DoD: ไม่มี key → 503 + หน้าแจ้ง "ต้องตั้ง key" · มี key → ทำงาน
+- [x] providers/email.py (EMAIL_API_KEY)
+- [x] email_lookup: router + page + js (ไม่มี key → TOOL_DISABLED 503)
+- [x] DoD: ไม่มี key → 503 + หน้าแจ้ง "ต้องตั้ง key" · มี key → ทำงาน
 
 ## Phase 4 — polish
 - [ ] Bulk lookup (wrapper หลายค่า ใช้ validation+rate limit เดิม)
