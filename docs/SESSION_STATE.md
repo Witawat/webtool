@@ -24,17 +24,18 @@
 - **ping เสร็จ** (commit `2585f94`): services/ping.py (icmplib async_ping + TCP fallback 80/443 + icmp:false) + routers/ping.py (rate 10/min, count 1-10) + template/js (badge alive + rtt) + tests/test_ping.py — 102 passed · ทดสอบจริง 1.1.1.1 → ICMP ทำงาน rtt ~20ms (privileged=False ใช้ได้บนเครื่องนี้)
 - **traceroute เสร็จ** (commit `fff8fdb`): services/traceroute.py (icmplib.traceroute sync → asyncio.to_thread) + routers/traceroute.py (rate 3/min, max_hops 3-30) + template/js (ตาราง hop) + tests/test_traceroute.py — 107 passed · ทดสอบจริง 1.1.1.1 → 5 hops + rtt
   - ⚠️ **icmplib 3.0.4 gotchas**: ไม่มี async_traceroute (มีแค่ traceroute sync → to_thread) · traceroute ไม่รับ privileged (ต้อง raw socket เสมอ) · Hop object มี `distance` ไม่มี `ttl` (แมป ttl=distance) · rtts sanitize None/inf
+- **ssl เสร็จ** (commit `0c52dbf`): services/ssl_checker.py (ssl.CERT_NONE+check_hostname=False เพื่อดึง cert แม้ไม่ผ่าน verify → cryptography แยก field + _host_matches wildcard + warnings expired/expires_soon/self_signed/hostname_mismatch) + routers/ssl_checker.py (rate 10/min, port default 443) + template/js (banner เตือน + การ์ด cert) + tests/test_ssl_checker.py — 117 passed · ทดสอบจริง example.com → TLSv1.3 + cert ครบ (เจอ/แก้ bug: _cert_info ลืมคืน key warnings)
 
 ## Active
-- **Phase 1 ตัวถัดไป: ssl** (ลำดับ: my-ip ✓ → port-checker ✓ → dns ✓ → subnet-calc ✓ → port-scan ✓ → ping ✓ → traceroute ✓ → ssl → whois → asn-rdap → fetch → header → phone → email-dns) — เหลือ 7 ตัว
-- ssl schema §5.8: `{host, port?=443}` → connected/valid/protocol/cipher/cert{subject_cn,sans,issuer,valid_from,valid_to,days_left,serial,sig_algo}/warnings[] · asyncio.open_connection(ssl=ctx, server_hostname) + cryptography แยก field cert · warnings: expires_soon/expired/self_signed/hostname_mismatch · rate 10/min
+- **Phase 1 ตัวถัดไป: whois** (ลำดับ: my-ip ✓ → port-checker ✓ → dns ✓ → subnet-calc ✓ → port-scan ✓ → ping ✓ → traceroute ✓ → ssl ✓ → whois → asn-rdap → fetch → header → phone → email-dns) — เหลือ 6 ตัว
+- whois schema §5.9: `{domain}` → registrar/created/updated/expires/status[]/nameservers[]/raw_text/tld_privacy · **python-whois ใน asyncio.to_thread** (blocking!) + timeout · domain เป็นหลัก (IP → ใช้ asn-rdap) · rate 10/min
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **ssl**: services/ssl_checker.py (ssl module + cryptography) + routers/ssl_checker.py (rate 10/min) + templates/tools/ssl.html (host+port) + static/js/tools/ssl.js (banner เตือน + การ์ด cert) + tests/test_ssl_checker.py → ขีด CHECKLIST + commit `feat(ssl): ...`
-2. ต่อ whois (python-whois in to_thread) → asn-rdap (httpx rdap.org) → fetch → header → phone → email-dns (จบ Phase 1)
+1. **whois**: services/whois.py (python-whois in asyncio.to_thread + timeout) + routers/whois.py (rate 10/min) + templates/tools/whois.html + static/js/tools/whois.js (การ์ด key-value + raw_text collapsible) + tests/test_whois.py → ขีด CHECKLIST + commit `feat(whois): ...`
+2. ต่อ asn-rdap (httpx rdap.org) → fetch → header → phone → email-dns (จบ Phase 1)
 3. Phase 2: reverse_ip + network_location · Phase 3: reverse_email · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
 
 ## คำสั่งยืนยัน
@@ -42,4 +43,4 @@
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `fff8fdb` feat(traceroute): add traceroute tool · version: 0.1.0
+- `0c52dbf` feat(ssl): add ssl/tls checker tool · version: 0.1.0
