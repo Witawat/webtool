@@ -1,0 +1,10 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="cidr">{{ t(lang, 'tool.subnet-calc.cidr_label') }}</label>
+  <input type="text" id="cidr" name="cidr" placeholder="192.168.1.0/24" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.subnet-calc.about') }}</p>
+{% endblock %}
