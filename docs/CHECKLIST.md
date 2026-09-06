@@ -38,7 +38,7 @@
 - [x] 11. fetch
 - [x] 12. header
 - [x] 13. phone
-- [ ] 14. email-dns
+- [x] 14. email-dns
 
 ### คุณภาพขั้นต่ำต่อเครื่องมือ (ทำครบก่อนขีด)
 - [ ] services/<slug>.py — คืน JSON ตาม schema PLAN §5
