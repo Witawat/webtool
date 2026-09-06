@@ -41,15 +41,17 @@
 - [x] 14. email-dns
 
 ### คุณภาพขั้นต่ำต่อเครื่องมือ (ทำครบก่อนขีด)
-- [ ] services/<slug>.py — คืน JSON ตาม schema PLAN §5
-- [ ] routers/<slug>.py — GET /tools/<slug> (หน้า) + POST /api/<slug>
-- [ ] templates/tools/<slug>.html + static/js/tools/<slug>.js (renderResult)
-- [ ] tests/test_<slug>.py (unit; network จริง → marker `network`)
-- [ ] ทดสอบจริง: input ถูก → ผลตรง schema
-- [ ] edge: input ผิด → 400 · ยิงซ้ำ → 429 · timeout → 504
-- [ ] i18n: ข้อความทุกอันผ่าน I18N (th+en, ไม่มี string แข็งใน JS)
-- [ ] SSRF guard (เฉพาะ fetch / header / reverse_ip / network_location)
-- [ ] แจ้ง provider ในหน้า (เฉพาะ external)
+- [x] services/<slug>.py — คืน JSON ตาม schema PLAN §5
+- [x] routers/<slug>.py — GET /tools/<slug> (หน้า) + POST /api/<slug>
+- [x] templates/tools/<slug>.html + static/js/tools/<slug>.js (renderResult)
+- [x] tests/test_<slug>.py (unit; network จริง → marker `network`)
+- [x] ทดสอบจริง: input ถูก → ผลตรง schema
+- [x] edge: input ผิด → 400 · ยิงซ้ำ → 429 · timeout → 504
+- [x] i18n: ข้อความทุกอันผ่าน I18N (th+en, ไม่มี string แข็งใน JS)
+- [x] SSRF guard (เฉพาะ fetch / header / reverse_ip / network_location) — ทำแล้ว: fetch + header
+- [ ] แจ้ง provider ในหน้า (เฉพาะ external) — Phase 2/3
+
+**จบเฟส:** 14 ตัวครบ · `pytest -m "not network"` = 155 passed · `ruff check .` ผ่าน ✅
 
 ## Phase 2 — external
 - [ ] providers/geoip.py (ip-api http → MaxMind geoip2 ถ้ามี key)

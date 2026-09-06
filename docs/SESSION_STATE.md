@@ -26,22 +26,31 @@
   - ⚠️ **icmplib 3.0.4 gotchas**: ไม่มี async_traceroute (มีแค่ traceroute sync → to_thread) · traceroute ไม่รับ privileged (ต้อง raw socket เสมอ) · Hop object มี `distance` ไม่มี `ttl` (แมป ttl=distance) · rtts sanitize None/inf
 - **ssl เสร็จ** (commit `0c52dbf`): services/ssl_checker.py (ssl.CERT_NONE+check_hostname=False เพื่อดึง cert แม้ไม่ผ่าน verify → cryptography แยก field + _host_matches wildcard + warnings expired/expires_soon/self_signed/hostname_mismatch) + routers/ssl_checker.py (rate 10/min, port default 443) + template/js (banner เตือน + การ์ด cert) + tests/test_ssl_checker.py — 117 passed · ทดสอบจริง example.com → TLSv1.3 + cert ครบ (เจอ/แก้ bug: _cert_info ลืมคืน key warnings)
 - **whois เสร็จ** (commit `60429c7`): services/whois.py (**python-whois ใน asyncio.to_thread** + _as_list/_fmt_date + tld_privacy จาก hint "privacy/redacted") + routers/whois.py (parse_domain เท่านั้น ไม่รับ IP, rate 10/min) + template/js (การ์ด + raw_text collapsible) + tests/test_whois.py — 126 passed · ทดสอบจริง example.com → registrar RESERVED-IANA (เจอ/แก้ bug: whois.js rows() ไม่ return html)
+- **asn-rdap เสร็จ** (commit `9dcc3a1`): services/rdap_asn.py (httpx rdap.org + follow_redirects → RIR, parse cidr/org จาก entities/vcard) + routers/asn_rdap.py (rate 20/min, detect IP หรือ ASN จาก query เดียว) + template/js (การ์ด + provider-note) + tests/test_asn_rdap.py (parsers pure + network) — 133 passed · ทดสอบจริง 8.8.8.8 → NET-8-8-8-0-2/Google LLC, ASN 15169 → GOOGLE
+- **fetch เสร็จ** (commit `172d007`): services/fetch_http.py (**manual redirect loop + SSRF guard ทุก redirect** + ตัด body 1MB) + routers/fetch_http.py (method/headers/body/follow, rate 10/min) + template/js (method select + headers/body textarea + badge status + collapsible) + tests/test_fetch_http.py (SSRF/400/429/network) — 139 passed · ⚠️ rate test อย่าใช้ URL จริง (8.8.8.8) — ใช้ 127.0.0.1 (block เร็ว) กัน test ค้าง
+- **header เสร็จ** (commit `ab869ee`): services/header_checker.py (GET + วิเคราะห์ security headers 6 ตัว + score 0-6 + SSRF) + routers/header_checker.py (rate 10/min) + template/js (score + badge present/missing ต่อ header) + tests — 144 passed · example.com → 200 + score 0/6 (ไม่มี security headers)
+- **phone เสร็จ** (commit `672abe9`): services/phone_geo.py (**phonenumbers offline** — parse/valid/e164/region/carrier/timezones/type) + routers/phone_geo.py (rate 20/min) + template/js (badge valid) + tests/test_phone_geo.py (offline, ไม่ต้อง network) — 152 passed · +16692226000 → US/California/America_Los_Angeles, 2ms
+- **email-dns เสร็จ** (commit `b920978`): services/email_dns.py (MX + TXT spf/dmarc + DKIM selectors 8 ตัว + summary pass/warn/fail) + routers/email_dns.py (rate 30/min) + template/js (ตาราง MX + badge ต่อ spf/dkim/dmarc) + tests — 155 passed · gmail.com → MX 5 + SPF + DMARC (DKIM ไม่พบ = จริงของ gmail)
+
+## ✅ **Phase 1 จบ — 14 self-host ครบ** · `pytest -m "not network"` = 155 passed · `ruff check .` ผ่าน · ทุกตัวตรวจเบราว์เซอร์แล้ว (ภาษาไทย/EN + AJAX + badge)
 
 ## Active
-- **Phase 1 ตัวถัดไป: asn-rdap** (ลำดับ: my-ip ✓ → port-checker ✓ → dns ✓ → subnet-calc ✓ → port-scan ✓ → ping ✓ → traceroute ✓ → ssl ✓ → whois ✓ → asn-rdap → fetch → header → phone → email-dns) — เหลือ 5 ตัว
-- asn-rdap schema §5.10: `{ip}` หรือ `{asn}` → handle/name/type/start_address/end_address/cidr/country/asn{number,name}/org{handle,name}/source · httpx.AsyncClient(follow_redirects=True) → https://rdap.org/ip/<ip> หรือ /autnum/<asn> (301 → RIR) · ไม่ต้อง key · rate 20/min
+- **Phase 2 — external** (reverse_ip, network_location): สร้าง providers/ ตาม PLAN §5.15/§5.16
+- reverse_ip §5.15: HackerTarget `GET https://api.hackertarget.com/reverseiplookup/?q=<ip>` → ข้อความล้วน (บรรทัดละ domain, `error`/`API count exceeded` = UPSTREAM_ERROR) · rate 3/min · HACKERTARGET_KEY ไม่บังคับ (มี → append &key=) · แสดง provider ในหน้า
+- network_location §5.16: **`http://ip-api.com/json/<ip>?fields=...`** (ฟรี = HTTP เท่านั้น) → ถ้า MAXMIND_KEY → geoip2 แทน · rate 10/min · แสดงผลบนแผนที่ Leaflet CDN
 
 ## Blocked
 - ไม่มี
 
 ## Next Move
-1. **asn-rdap**: services/rdap_asn.py (httpx rdap.org + redirect ตาม RIR) + routers/asn_rdap.py (rate 20/min, รับ ip หรือ asn) + templates/tools/asn-rdap.html + static/js/tools/asn-rdap.js (การ์ด key-value) + tests/test_asn_rdap.py (mock provider + network) → ขีด CHECKLIST + commit `feat(asn-rdap): ...`
-2. ต่อ fetch → header → phone → email-dns (จบ Phase 1)
-3. Phase 2: reverse_ip + network_location · Phase 3: reverse_email · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
+1. **providers/geoip.py** (ip-api http → MaxMind ถ้ามี key) + **providers/reverse_ip.py** (HackerTarget, parse ข้อความ) + ตรวจ providers/__init__.py
+2. **reverse_ip**: services/routers/template/js/test (mock provider) → commit `feat(reverse-ip): ...`
+3. **network_location**: router/page/js + **Leaflet map** + test (mock) → commit `feat(network-location): ...`
+4. Phase 3: reverse_email (premium) · Phase 4: polish + Bulk + i18n เต็ม + README/CHANGELOG · Phase 5: packaging + release
 
 ## คำสั่งยืนยัน
 - setup: `setup.bat` · dev: `run-dev.bat` · test: `pytest -m "not network"` · lint: `ruff check .` · build: `build.bat` (Phase 5)
 - วิธีรัน server ตรวจด้วยเบราว์เซอร์: `.venv\Scripts\python -m uvicorn main:app --host 127.0.0.1 --port 8000` · ⚠️ หลังสร้าง router ใหม่ต้อง restart server (auto-discover รันตอน create_app) — เห็น 404 /api/<slug> = ลืม restart
 
 ## Commit ล่าสุด
-- `60429c7` feat(whois): add whois lookup tool · version: 0.1.0
+- `b920978` feat(email-dns): add email domain dns analysis tool · version: 0.1.0
