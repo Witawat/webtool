@@ -1,0 +1,20 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="domain">{{ t(lang, 'tool.dns.domain_label') }}</label>
+  <input type="text" id="domain" name="domain" placeholder="example.com" required>
+</div>
+<div class="field types-field">
+  <label>{{ t(lang, 'tool.dns.types_label') }}</label>
+  <div class="quick-ports-btns">
+    {% for t in all_types %}
+    <label class="chip-check">
+      <input type="checkbox" name="types" value="{{ t }}" {% if t in default_types %}checked{% endif %}> {{ t }}
+    </label>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.dns.about') }}</p>
+{% endblock %}
