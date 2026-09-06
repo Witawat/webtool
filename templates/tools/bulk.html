@@ -1,0 +1,16 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="slug">{{ t(lang, 'tool.bulk.slug_label') }}</label>
+  <select id="slug" name="slug">
+    {% for s in bulk_slugs %}<option value="{{ s }}">{{ s }}</option>{% endfor %}
+  </select>
+</div>
+<div class="field wide">
+  <label for="values">{{ t(lang, 'tool.bulk.values_label') }}</label>
+  <textarea id="values" name="values" rows="6" placeholder="example.com&#10;google.com"></textarea>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.bulk.about') }}</p>
+{% endblock %}
