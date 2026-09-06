@@ -371,3 +371,26 @@ body {
   margin-top: 0.75rem;
   color: var(--muted);
 }
+
+.provider-note {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.raw {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  overflow-x: auto;
+  max-height: 24rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+details summary {
+  cursor: pointer;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}

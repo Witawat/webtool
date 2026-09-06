@@ -34,7 +34,7 @@
 - [x] 7. traceroute
 - [x] 8. ssl
 - [x] 9. whois
-- [ ] 10. asn-rdap
+- [x] 10. asn-rdap
 - [ ] 11. fetch
 - [ ] 12. header
 - [ ] 13. phone

@@ -1,0 +1,10 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="query">{{ t(lang, 'tool.asn-rdap.query_label') }}</label>
+  <input type="text" id="query" name="query" placeholder="8.8.8.8 หรือ 15169" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.asn-rdap.about') }} · <span class="provider-note">{{ t(lang, 'ui.provider', provider='rdap.org') }}</span></p>
+{% endblock %}
