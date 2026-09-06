@@ -29,6 +29,7 @@ class Settings(BaseSettings):
     global_semaphore: int = 50
 
     maxmind_key: str = ""
+    maxmind_db_path: str = ""
     hackertarget_key: str = ""
     email_api_key: str = ""
 

@@ -85,7 +85,7 @@ def parse_cidr(s: str) -> ipaddress.IPv4Network | ipaddress.IPv6Network:
         raise AppError("INVALID_INPUT", "INVALID_INPUT", field="cidr") from exc
 
 
-def _is_forbidden_ip(ip_obj) -> bool:
+def is_forbidden_ip(ip_obj) -> bool:
     return (
         ip_obj.is_private
         or ip_obj.is_link_local
@@ -117,7 +117,7 @@ def _normalize_hostname(host: str) -> str:
         raise AppError("INVALID_INPUT", "INVALID_INPUT", field="url") from exc
 
 
-async def _resolve_host_ips(host: str) -> list[str]:
+async def resolve_host_ips(host: str) -> list[str]:
     try:
         infos = await asyncio.wait_for(
             asyncio.get_running_loop().getaddrinfo(
@@ -158,15 +158,15 @@ async def validate_url_safe(url: str) -> str:
             ip_obj = None
 
     if ip_obj is not None:
-        if _is_forbidden_ip(ip_obj):
+        if is_forbidden_ip(ip_obj):
             raise AppError("SSRF_BLOCKED", "SSRF_BLOCKED", field="url")
     else:
         host = _normalize_hostname(host)
-        resolved = await _resolve_host_ips(host)
+        resolved = await resolve_host_ips(host)
         if not resolved:
             raise AppError("NOT_FOUND", "NOT_FOUND", field="url")
         for ip_str in resolved:
-            if _is_forbidden_ip(ipaddress.ip_address(ip_str)):
+            if is_forbidden_ip(ipaddress.ip_address(ip_str)):
                 raise AppError("SSRF_BLOCKED", "SSRF_BLOCKED", field="url")
 
     return f"{scheme}://{host_port}/{path}"

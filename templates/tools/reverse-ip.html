@@ -1,0 +1,10 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="ip">{{ t(lang, 'tool.reverse-ip.ip_label') }}</label>
+  <input type="text" id="ip" name="ip" placeholder="8.8.8.8" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.reverse-ip.about') }} · <span class="provider-note">{{ t(lang, 'ui.provider', provider='HackerTarget') }}</span></p>
+{% endblock %}
