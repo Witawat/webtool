@@ -186,3 +186,105 @@ body {
   border-radius: 8px;
   margin-top: 1rem;
 }
+
+.tool-header {
+  margin-bottom: 1rem;
+}
+
+.tool-header h1 {
+  margin: 0 0 0.25rem;
+}
+
+.tool-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-end;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tool-form .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tool-form label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.tool-form input,
+.tool-form select {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 0.95rem;
+}
+
+.tool-form input:focus,
+.tool-form select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.result {
+  min-height: 2rem;
+}
+
+.result-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.result-card p {
+  margin: 0.25rem 0;
+}
+
+.duration {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.about {
+  margin-top: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.about h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.about p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}

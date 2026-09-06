@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ t(lang, 'tool.' + slug + '.name') }} · WebTool{% endblock %}
+{% block content %}
+<section class="tool-header">
+  <h1>{{ t(lang, 'tool.' + slug + '.name') }}</h1>
+  <p class="subtitle">{{ t(lang, 'tool.' + slug + '.desc') }}</p>
+</section>
+<form id="tool-form" autocomplete="off" class="tool-form">
+  {% block form_fields %}{% endblock %}
+  <button type="submit" id="submit-btn" class="btn">{{ t(lang, 'common.check') }}</button>
+</form>
+<div id="result" class="result"></div>
+<section class="about">
+  <h2>{{ t(lang, 'ui.about') }}</h2>
+  {% block about %}{% endblock %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="/static/js/tools/{{ slug }}.js"></script>
+{% endblock %}

@@ -1,10 +1,13 @@
+import importlib
 import logging
+import pkgutil
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+import routers as routers_pkg
 from core.config import settings
 from core.errors import AppError
 from core.i18n import t
@@ -20,6 +23,13 @@ def create_app() -> FastAPI:
     app = FastAPI(title=settings.app_name, version=settings.version)
 
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+    for mod_info in pkgutil.iter_modules(routers_pkg.__path__):
+        if mod_info.name == "home":
+            continue
+        mod = importlib.import_module(f"routers.{mod_info.name}")
+        if hasattr(mod, "router"):
+            app.include_router(mod.router)
     app.include_router(home.router)
 
     @app.exception_handler(AppError)

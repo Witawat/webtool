@@ -25,7 +25,7 @@
 - [x] commit แรก + `gh repo create Witawat/webtool --source . --remote origin --push`
 
 ## Phase 1 — 14 self-host
-- [ ] 1. my-ip
+- [x] 1. my-ip
 - [ ] 2. port-checker
 - [ ] 3. dns
 - [ ] 4. subnet-calc

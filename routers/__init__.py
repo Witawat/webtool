@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import time
+
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 
@@ -31,3 +33,10 @@ def render(
         **(ctx or {}),
     }
     return templates.TemplateResponse(request, name, context)
+
+
+def json_ok(data, started: float | None = None) -> dict:
+    duration_ms = 0
+    if started is not None:
+        duration_ms = int((time.perf_counter() - started) * 1000)
+    return {"ok": True, "data": data, "duration_ms": duration_ms}
