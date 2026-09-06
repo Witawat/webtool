@@ -33,7 +33,7 @@
 - [x] 6. ping
 - [x] 7. traceroute
 - [x] 8. ssl
-- [ ] 9. whois
+- [x] 9. whois
 - [ ] 10. asn-rdap
 - [ ] 11. fetch
 - [ ] 12. header

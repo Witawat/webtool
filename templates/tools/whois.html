@@ -1,0 +1,10 @@
+{% extends "tool.html" %}
+{% block form_fields %}
+<div class="field">
+  <label for="domain">{{ t(lang, 'tool.whois.domain_label') }}</label>
+  <input type="text" id="domain" name="domain" placeholder="example.com" required>
+</div>
+{% endblock %}
+{% block about %}
+<p>{{ t(lang, 'tool.whois.about') }}</p>
+{% endblock %}
